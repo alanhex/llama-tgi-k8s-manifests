@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llama-tgi-server
+  namespace: llama
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llama-tgi-server
+  template:
+    metadata:
+      labels:
+        app: llama-tgi-server
+    spec:
+      containers:
+      - name: llama-tgi-server
+        image: ghcr.io/huggingface/text-generation-inference:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MODEL_ID
+          value: "meta-llama/Llama-2-7b-chat-hf"
+        - name: USE_CUDA
+          value: "true"
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+          requests:
+            cpu: "2"
+            memory: "6Gi"
+        securityContext:
+          privileged: true

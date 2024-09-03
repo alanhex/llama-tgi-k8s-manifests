@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llama-tgi-service
+  namespace: llama
+spec:
+  selector:
+    app: llama-tgi-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
